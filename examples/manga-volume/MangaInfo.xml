@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- A volume of a series. The series file is ../manga-volume/MangaSeries.json. -->
+<MangaInfo xmlns="https://exodospavilion.github.io/MangaInfo/1" version="1.0.0">
+  <Unit type="volume">
+    <Volume>3</Volume>
+    <FirstChapter>17</FirstChapter>
+    <LastChapter>25</LastChapter>
+    <Title>The Drowned Bell</Title>
+    <ReleaseDate year="2021" month="6" day="8"/>
+    <Language>en</Language>
+    <Isbn>978-0-00-000003-0</Isbn>
+    <PageCount>196</PageCount>
+    <Publisher>
+      <Name>Example Press</Name>
+    </Publisher>
+    <Creators>
+      <Creator role="translator">
+        <Name>Example Translator</Name>
+      </Creator>
+      <Creator role="letterer">
+        <Name>Example Letterer</Name>
+      </Creator>
+    </Creators>
+    <Pages>
+      <Page index="0" type="cover"/>
+      <Page index="1" type="contents"/>
+      <Page index="42" doublePage="true"/>
+      <Page index="194" type="credits"/>
+      <Page index="195" type="backCover"/>
+    </Pages>
+  </Unit>
+  <Series>
+    <Titles>
+      <Title language="en" primary="true">Lanterns of the Tide</Title>
+      <Title language="ja">潮の灯籠</Title>
+    </Titles>
+    <ExternalIds>
+      <ExternalId provider="anilist">900100</ExternalId>
+      <ExternalId provider="mal">900200</ExternalId>
+    </ExternalIds>
+    <Format>manga</Format>
+    <OriginalLanguage>ja</OriginalLanguage>
+    <ReadingMode>rightToLeft</ReadingMode>
+    <ContentRating>safe</ContentRating>
+  </Series>
+  <Extensions>
+    <Extension tool="example-sync-tool">
+      <LastSync>2026-11-16</LastSync>
+    </Extension>
+  </Extensions>
+</MangaInfo>

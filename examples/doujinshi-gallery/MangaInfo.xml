@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- A standalone unit. It has no series file, so it carries its own description. -->
+<MangaInfo xmlns="https://exodospavilion.github.io/MangaInfo/1" version="1.0.0">
+  <Unit type="gallery">
+    <ReleaseDate year="2023" month="12" day="30"/>
+    <Language>en</Language>
+    <PageCount>28</PageCount>
+    <ScanlationGroups>
+      <ScanlationGroup>Example Scans</ScanlationGroup>
+    </ScanlationGroups>
+    <Creators>
+      <Creator role="translator">
+        <Name>Example Translator</Name>
+      </Creator>
+    </Creators>
+    <Pages>
+      <Page index="0" type="cover"/>
+      <Page index="26" type="credits"/>
+      <Page index="27" type="backCover"/>
+    </Pages>
+  </Unit>
+  <Description>
+    <Titles>
+      <Title language="en" primary="true">After the Tide Goes Out</Title>
+      <Title language="ja">潮が引いたあとで</Title>
+    </Titles>
+    <Creators>
+      <Creator role="storyAndArt">
+        <Name>Example Doujin Artist</Name>
+        <ExternalIds>
+          <ExternalId provider="nhentai">example-doujin-artist</ExternalId>
+        </ExternalIds>
+      </Creator>
+    </Creators>
+    <Summaries>
+      <Summary language="en">A side story about two characters from Lanterns of the Tide, set after the harbour festival.</Summary>
+    </Summaries>
+    <Tags>
+      <Tag>full color</Tag>
+      <Tag namespace="female">glasses</Tag>
+      <Tag namespace="male">glasses</Tag>
+    </Tags>
+    <Characters>
+      <Character>Nagisa</Character>
+    </Characters>
+    <ExternalIds>
+      <ExternalId provider="nhentai">9900001</ExternalId>
+      <ExternalId provider="ehentai">9900002</ExternalId>
+    </ExternalIds>
+    <Format>manga</Format>
+    <PublicationType>doujinshi</PublicationType>
+    <ContentRating>pornographic</ContentRating>
+    <ReadingMode>rightToLeft</ReadingMode>
+    <CensorshipState>mosaic</CensorshipState>
+    <OriginCountry>JP</OriginCountry>
+    <OriginalLanguage>ja</OriginalLanguage>
+    <Parodies>
+      <Parody>
+        <Name>Lanterns of the Tide</Name>
+        <ExternalIds>
+          <ExternalId provider="anilist">900100</ExternalId>
+        </ExternalIds>
+      </Parody>
+    </Parodies>
+    <Circles>
+      <Circle>
+        <Name>Example Circle</Name>
+      </Circle>
+    </Circles>
+    <Event>
+      <Name>Comiket 103</Name>
+      <Date year="2023" month="12" day="30"/>
+    </Event>
+  </Description>
+</MangaInfo>

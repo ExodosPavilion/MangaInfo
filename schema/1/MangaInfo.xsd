@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  MangaInfo.xml schema, version 1.0.0.
+  A MangaInfo file describes one unit (the contents of one archive).
+  Field reference: docs/field-reference.md
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:mi="https://exodospavilion.github.io/MangaInfo/1"
+           targetNamespace="https://exodospavilion.github.io/MangaInfo/1"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="1.0.0">
+
+  <!-- ===== Root ===== -->
+
+  <xs:element name="MangaInfo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Unit" type="mi:Unit">
+          <xs:unique name="UniquePageIndex">
+            <xs:selector xpath="mi:Pages/mi:Page"/>
+            <xs:field xpath="@index"/>
+          </xs:unique>
+        </xs:element>
+        <xs:choice>
+          <!-- A unit that belongs to a series repeats the series identity. -->
+          <xs:element name="Series" type="mi:SeriesIdentity">
+            <xs:unique name="OnePrimarySeriesTitle">
+              <xs:selector xpath="mi:Titles/mi:Title"/>
+              <xs:field xpath="@primary"/>
+            </xs:unique>
+          </xs:element>
+          <!-- A standalone unit (one-shot or gallery) carries its own description. -->
+          <xs:element name="Description" type="mi:Description">
+            <xs:unique name="OnePrimaryUnitTitle">
+              <xs:selector xpath="mi:Titles/mi:Title"/>
+              <xs:field xpath="@primary"/>
+            </xs:unique>
+            <xs:unique name="OneSummaryPerLanguage">
+              <xs:selector xpath="mi:Summaries/mi:Summary"/>
+              <xs:field xpath="@language"/>
+            </xs:unique>
+          </xs:element>
+        </xs:choice>
+        <xs:element name="Extensions" type="mi:Extensions" minOccurs="0">
+          <xs:unique name="OneExtensionPerTool">
+            <xs:selector xpath="mi:Extension"/>
+            <xs:field xpath="@tool"/>
+          </xs:unique>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="version" type="mi:Version" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- ===== Unit ===== -->
+
+  <xs:complexType name="Unit">
+    <xs:all>
+      <xs:element name="Volume" type="mi:NonEmptyString" minOccurs="0"/>
+      <xs:element name="FirstChapter" type="mi:NonEmptyString" minOccurs="0"/>
+      <xs:element name="LastChapter" type="mi:NonEmptyString" minOccurs="0"/>
+      <xs:element name="Title" type="mi:NonEmptyString" minOccurs="0"/>
+      <xs:element name="ReleaseDate" type="mi:PartialDate" minOccurs="0"/>
+      <xs:element name="Language" type="xs:language" minOccurs="0"/>
+      <xs:element name="Isbn" type="mi:Isbn" minOccurs="0"/>
+      <xs:element name="PageCount" type="xs:positiveInteger" minOccurs="0"/>
+      <xs:element name="Publisher" type="mi:Publisher" minOccurs="0"/>
+      <xs:element name="ScanlationGroups" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ScanlationGroup" type="mi:NonEmptyString" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <!-- Creators of this unit only, such as its translator. -->
+      <xs:element name="Creators" type="mi:Creators" minOccurs="0"/>
+      <!-- Overrides: each replaces the series value for this unit only. -->
+      <xs:element name="ContentRating" type="mi:ContentRating" minOccurs="0"/>
+      <xs:element name="ReadingMode" type="mi:ReadingMode" minOccurs="0"/>
+      <xs:element name="CensorshipState" type="mi:CensorshipState" minOccurs="0"/>
+      <xs:element name="Pages" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Page" type="mi:Page" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+    <xs:attribute name="type" type="mi:UnitType" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="Page">
+    <xs:attribute name="index" type="xs:nonNegativeInteger" use="required"/>
+    <xs:attribute name="type" type="mi:PageType" default="story"/>
+    <xs:attribute name="doublePage" type="xs:boolean" default="false"/>
+  </xs:complexType>
+
+  <!-- ===== Series identity ===== -->
+
+  <xs:complexType name="SeriesIdentity">
+    <xs:all>
+      <xs:element name="Titles" type="mi:Titles"/>
+      <xs:element name="ExternalIds" type="mi:ExternalIds" minOccurs="0"/>
+      <xs:element name="Format" type="mi:Format" minOccurs="0"/>
+      <xs:element name="OriginalLanguage" type="xs:language" minOccurs="0"/>
+      <xs:element name="ReadingMode" type="mi:ReadingMode" minOccurs="0"/>
+      <xs:element name="ContentRating" type="mi:ContentRating" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+
+  <!-- ===== Description ===== -->
+
+  <xs:complexType name="Description">
+    <xs:all>
+      <xs:element name="Titles" type="mi:Titles"/>
+      <xs:element name="Creators" type="mi:Creators" minOccurs="0"/>
+      <xs:element name="Summaries" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Summary" type="mi:Summary" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Genres" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Genre" type="mi:NonEmptyString" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Tags" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Tag" type="mi:Tag" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Characters" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Character" type="mi:NonEmptyString" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ExternalIds" type="mi:ExternalIds" minOccurs="0"/>
+      <xs:element name="Links" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Link" type="mi:Link" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Covers" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Cover" type="mi:Cover" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Format" type="mi:Format" minOccurs="0"/>
+      <xs:element name="PublicationType" type="mi:PublicationType" minOccurs="0"/>
+      <xs:element name="Demographic" type="mi:Demographic" minOccurs="0"/>
+      <xs:element name="ContentRating" type="mi:ContentRating" minOccurs="0"/>
+      <xs:element name="ReadingMode" type="mi:ReadingMode" minOccurs="0"/>
+      <xs:element name="CensorshipState" type="mi:CensorshipState" minOccurs="0"/>
+      <xs:element name="OriginCountry" type="mi:CountryCode" minOccurs="0"/>
+      <xs:element name="OriginalLanguage" type="xs:language" minOccurs="0"/>
+      <xs:element name="Parodies" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Parody" type="mi:NamedEntity" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Circles" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Circle" type="mi:NamedEntity" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Event" type="mi:Event" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+
+  <!-- ===== Shared shapes ===== -->
+
+  <xs:complexType name="Titles">
+    <xs:sequence>
+      <xs:element name="Title" type="mi:Title" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Exactly one Title in a list must have primary="true". The schema can
+       enforce "at most one"; "at least one" is a rule of the specification. -->
+  <xs:complexType name="Title">
+    <xs:simpleContent>
+      <xs:extension base="mi:NonEmptyString">
+        <xs:attribute name="language" type="xs:language"/>
+        <xs:attribute name="kind" type="mi:TitleKind" default="official"/>
+        <xs:attribute name="primary" type="mi:TrueOnly"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="Creators">
+    <xs:sequence>
+      <xs:element name="Creator" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:all>
+            <xs:element name="Name" type="mi:NonEmptyString"/>
+            <xs:element name="Note" type="mi:NonEmptyString" minOccurs="0"/>
+            <xs:element name="ExternalIds" type="mi:ExternalIds" minOccurs="0"/>
+          </xs:all>
+          <xs:attribute name="role" type="mi:Role" use="required"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Summary">
+    <xs:simpleContent>
+      <xs:extension base="mi:NonEmptyString">
+        <xs:attribute name="language" type="xs:language" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="Tag">
+    <xs:simpleContent>
+      <xs:extension base="mi:NonEmptyString">
+        <xs:attribute name="namespace" type="mi:NonEmptyString"/>
+        <xs:attribute name="spoiler" type="xs:boolean" default="false"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="ExternalIds">
+    <xs:sequence>
+      <xs:element name="ExternalId" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="mi:NonEmptyString">
+              <xs:attribute name="provider" type="mi:ProviderKey" use="required"/>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Link">
+    <xs:simpleContent>
+      <xs:extension base="mi:WebAddress">
+        <xs:attribute name="kind" type="mi:LinkKind"/>
+        <xs:attribute name="language" type="xs:language"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="Cover">
+    <xs:simpleContent>
+      <xs:extension base="mi:WebAddress">
+        <xs:attribute name="volume" type="mi:NonEmptyString"/>
+        <xs:attribute name="language" type="xs:language"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- A parody or a circle: a name with optional external IDs. -->
+  <xs:complexType name="NamedEntity">
+    <xs:all>
+      <xs:element name="Name" type="mi:NonEmptyString"/>
+      <xs:element name="ExternalIds" type="mi:ExternalIds" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="Event">
+    <xs:all>
+      <xs:element name="Name" type="mi:NonEmptyString"/>
+      <xs:element name="Date" type="mi:PartialDate" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="Publisher">
+    <xs:all>
+      <xs:element name="Name" type="mi:NonEmptyString"/>
+      <xs:element name="Imprint" type="mi:NonEmptyString" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+
+  <!-- A date with optional month and day. A day needs a month; the schema
+       language cannot express that, so it is a rule of the specification. -->
+  <xs:complexType name="PartialDate">
+    <xs:attribute name="year" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:integer">
+          <xs:minInclusive value="1"/>
+          <xs:maxInclusive value="9999"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="month">
+      <xs:simpleType>
+        <xs:restriction base="xs:integer">
+          <xs:minInclusive value="1"/>
+          <xs:maxInclusive value="12"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="day">
+      <xs:simpleType>
+        <xs:restriction base="xs:integer">
+          <xs:minInclusive value="1"/>
+          <xs:maxInclusive value="31"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <!-- Tool data. The schema does not examine the contents of an Extension. -->
+  <xs:complexType name="Extensions">
+    <xs:sequence>
+      <xs:element name="Extension" maxOccurs="unbounded">
+        <xs:complexType mixed="true">
+          <xs:sequence>
+            <xs:any namespace="##any" processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:attribute name="tool" type="mi:NonEmptyString" use="required"/>
+          <xs:anyAttribute namespace="##other" processContents="skip"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- ===== Simple types ===== -->
+
+  <xs:simpleType name="Version">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="1\.[0-9]+\.[0-9]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="NonEmptyString">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+      <xs:pattern value=".*\S.*"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TrueOnly">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="true"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="WebAddress">
+    <xs:restriction base="xs:anyURI">
+      <xs:pattern value="https?://.+"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ProviderKey">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-z0-9][a-z0-9\-]*"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="CountryCode">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Z]{2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Isbn">
+    <xs:restriction base="xs:string">
+      <!-- ISBN-10 or ISBN-13, with or without hyphens. -->
+      <xs:pattern value="[0-9][0-9\-]{8,15}[0-9Xx]"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="UnitType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="volume"/>
+      <xs:enumeration value="chapter"/>
+      <xs:enumeration value="chapterRange"/>
+      <xs:enumeration value="oneShot"/>
+      <xs:enumeration value="gallery"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="PageType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="cover"/>
+      <xs:enumeration value="backCover"/>
+      <xs:enumeration value="story"/>
+      <xs:enumeration value="contents"/>
+      <xs:enumeration value="credits"/>
+      <xs:enumeration value="advertisement"/>
+      <xs:enumeration value="other"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TitleKind">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="official"/>
+      <xs:enumeration value="alternative"/>
+      <xs:enumeration value="abbreviated"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Role">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="story"/>
+      <xs:enumeration value="art"/>
+      <xs:enumeration value="storyAndArt"/>
+      <xs:enumeration value="originalCreator"/>
+      <xs:enumeration value="characterDesign"/>
+      <xs:enumeration value="translator"/>
+      <xs:enumeration value="letterer"/>
+      <xs:enumeration value="editor"/>
+      <xs:enumeration value="assistant"/>
+      <xs:enumeration value="other"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="LinkKind">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="official"/>
+      <xs:enumeration value="retailer"/>
+      <xs:enumeration value="info"/>
+      <xs:enumeration value="social"/>
+      <xs:enumeration value="other"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Format">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="manga"/>
+      <xs:enumeration value="manhwa"/>
+      <xs:enumeration value="manhua"/>
+      <xs:enumeration value="oel"/>
+      <xs:enumeration value="other"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="PublicationType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="commercial"/>
+      <xs:enumeration value="doujinshi"/>
+      <xs:enumeration value="webcomic"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Demographic">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="shounen"/>
+      <xs:enumeration value="shoujo"/>
+      <xs:enumeration value="seinen"/>
+      <xs:enumeration value="josei"/>
+      <xs:enumeration value="kids"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ContentRating">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="safe"/>
+      <xs:enumeration value="suggestive"/>
+      <xs:enumeration value="erotica"/>
+      <xs:enumeration value="pornographic"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ReadingMode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="rightToLeft"/>
+      <xs:enumeration value="leftToRight"/>
+      <xs:enumeration value="vertical"/>
+      <xs:enumeration value="longStrip"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="CensorshipState">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="uncensored"/>
+      <xs:enumeration value="decensored"/>
+      <xs:enumeration value="mosaic"/>
+      <xs:enumeration value="bars"/>
+      <xs:enumeration value="other"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

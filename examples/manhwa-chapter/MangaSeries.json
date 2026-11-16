@@ -1,0 +1,32 @@
+{
+  "$schema": "https://exodospavilion.github.io/MangaInfo/1/MangaSeries.schema.json",
+  "version": "1.0.0",
+  "titles": [
+    { "text": "Night Shift Tower", "language": "en", "primary": true },
+    { "text": "야간 근무 타워", "language": "ko" },
+    { "text": "Yagan Geunmu Tawo", "language": "ko-Latn" }
+  ],
+  "creators": [{ "name": "Example Studio Writer", "role": "storyAndArt" }],
+  "summaries": [
+    {
+      "language": "en",
+      "text": "A security guard takes a night job in an office tower where each floor opens only for the people who owe it something."
+    }
+  ],
+  "genres": ["Thriller", "Supernatural"],
+  "tags": [{ "name": "Full Color" }, { "name": "Office Setting" }],
+  "externalIds": [
+    { "provider": "mangabaka", "id": "910100" },
+    { "provider": "comick", "id": "night-shift-tower" }
+  ],
+  "format": "manhwa",
+  "publicationType": "webcomic",
+  "contentRating": "suggestive",
+  "readingMode": "longStrip",
+  "originCountry": "KR",
+  "originalLanguage": "ko",
+  "publicationStatus": "hiatus",
+  "startDate": { "year": 2023 },
+  "totalChapters": 88,
+  "publishers": [{ "name": "Example Webtoon Platform", "language": "ko" }]
+}

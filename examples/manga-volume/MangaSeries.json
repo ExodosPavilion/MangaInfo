@@ -1,0 +1,73 @@
+{
+  "$schema": "https://exodospavilion.github.io/MangaInfo/1/MangaSeries.schema.json",
+  "version": "1.0.0",
+  "titles": [
+    { "text": "Lanterns of the Tide", "language": "en", "primary": true },
+    { "text": "潮の灯籠", "language": "ja" },
+    { "text": "Shio no Tourou", "language": "ja-Latn" },
+    { "text": "Tide Lanterns", "language": "en", "kind": "alternative" },
+    { "text": "LotT", "language": "en", "kind": "abbreviated" }
+  ],
+  "creators": [
+    {
+      "name": "Example Author",
+      "role": "story",
+      "externalIds": [{ "provider": "anilist", "id": "900001" }]
+    },
+    { "name": "Example Artist", "role": "art", "note": "From volume 4" },
+    { "name": "Example Translator", "role": "translator", "note": "English edition" }
+  ],
+  "summaries": [
+    {
+      "language": "en",
+      "text": "A lighthouse keeper's apprentice finds that the lanterns of her harbour town hold the memories of sailors lost at sea."
+    },
+    { "language": "ja", "text": "灯台守の見習いが、港町の灯籠に宿る記憶の秘密を知る。" }
+  ],
+  "genres": ["Fantasy", "Drama", "Mystery"],
+  "tags": [
+    { "name": "Coastal Setting" },
+    { "name": "Female Protagonist" },
+    { "name": "Mentor Dies", "spoiler": true }
+  ],
+  "characters": ["Nagisa", "Old Keeper Tobe"],
+  "externalIds": [
+    { "provider": "anilist", "id": "900100" },
+    { "provider": "mal", "id": "900200" },
+    { "provider": "mangaupdates", "id": "900300" }
+  ],
+  "links": [
+    { "url": "https://example.com/lanterns", "kind": "official", "language": "ja" },
+    { "url": "https://example.com/shop/lanterns-en", "kind": "retailer", "language": "en" }
+  ],
+  "covers": [
+    { "url": "https://example.com/covers/lanterns-series.jpg" },
+    { "url": "https://example.com/covers/lanterns-v03-en.jpg", "volume": "3", "language": "en" }
+  ],
+  "format": "manga",
+  "publicationType": "commercial",
+  "demographic": "seinen",
+  "contentRating": "safe",
+  "readingMode": "rightToLeft",
+  "originCountry": "JP",
+  "originalLanguage": "ja",
+  "publicationStatus": "ongoing",
+  "startDate": { "year": 2019, "month": 4, "day": 12 },
+  "totalVolumes": 9,
+  "publishers": [
+    { "name": "Example Shobo", "language": "ja", "imprint": "Tide Comics" },
+    { "name": "Example Press", "language": "en" }
+  ],
+  "magazines": [{ "name": "Monthly Example", "startDate": { "year": 2019, "month": 4 } }],
+  "licensedLanguages": ["en", "fr"],
+  "relations": [
+    {
+      "type": "spinOff",
+      "title": "Lanterns of the Tide: Low Water",
+      "externalIds": [{ "provider": "anilist", "id": "900101" }]
+    }
+  ],
+  "extensions": {
+    "example-sync-tool": { "lastSync": "2026-11-16", "matchedBy": "anilist" }
+  }
+}

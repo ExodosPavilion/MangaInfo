@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- One fan-translated chapter of a series. A single chapter gives FirstChapter only. -->
+<MangaInfo xmlns="https://exodospavilion.github.io/MangaInfo/1" version="1.0.0">
+  <Unit type="chapter">
+    <FirstChapter>41.5</FirstChapter>
+    <Title>Floor 13 (Extra)</Title>
+    <ReleaseDate year="2024" month="2"/>
+    <Language>en</Language>
+    <PageCount>58</PageCount>
+    <ScanlationGroups>
+      <ScanlationGroup>Example Scans</ScanlationGroup>
+    </ScanlationGroups>
+    <!-- Override: this chapter is more explicit than the series as a whole. -->
+    <ContentRating>erotica</ContentRating>
+  </Unit>
+  <Series>
+    <Titles>
+      <Title language="en" primary="true">Night Shift Tower</Title>
+    </Titles>
+    <ExternalIds>
+      <ExternalId provider="mangabaka">910100</ExternalId>
+    </ExternalIds>
+    <Format>manhwa</Format>
+    <OriginalLanguage>ko</OriginalLanguage>
+    <ReadingMode>longStrip</ReadingMode>
+    <ContentRating>suggestive</ContentRating>
+  </Series>
+</MangaInfo>

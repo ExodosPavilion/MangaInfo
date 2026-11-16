@@ -1,0 +1,332 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://exodospavilion.github.io/MangaInfo/1/MangaSeries.schema.json",
+  "title": "MangaSeries.json",
+  "description": "A series file describes one series. Schema version 1.0.0. Field reference: docs/field-reference.md",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "titles"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "version": {
+      "description": "The schema version that this file obeys.",
+      "type": "string",
+      "pattern": "^1\\.[0-9]+\\.[0-9]+$"
+    },
+    "titles": { "$ref": "#/$defs/titles" },
+    "creators": { "$ref": "#/$defs/creators" },
+    "summaries": {
+      "description": "The story summary, one entry per language.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/summary" }
+    },
+    "genres": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/nonEmptyString" }
+    },
+    "tags": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/tag" }
+    },
+    "characters": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/nonEmptyString" }
+    },
+    "externalIds": { "$ref": "#/$defs/externalIds" },
+    "links": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/link" }
+    },
+    "covers": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/cover" }
+    },
+    "format": { "$ref": "#/$defs/format" },
+    "publicationType": { "$ref": "#/$defs/publicationType" },
+    "demographic": { "$ref": "#/$defs/demographic" },
+    "contentRating": { "$ref": "#/$defs/contentRating" },
+    "readingMode": { "$ref": "#/$defs/readingMode" },
+    "censorshipState": { "$ref": "#/$defs/censorshipState" },
+    "originCountry": { "$ref": "#/$defs/countryCode" },
+    "originalLanguage": { "$ref": "#/$defs/languageTag" },
+    "parodies": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/namedEntity" }
+    },
+    "circles": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/namedEntity" }
+    },
+    "event": { "$ref": "#/$defs/event" },
+    "publicationStatus": { "$ref": "#/$defs/publicationStatus" },
+    "startDate": { "$ref": "#/$defs/partialDate" },
+    "endDate": { "$ref": "#/$defs/partialDate" },
+    "totalVolumes": {
+      "description": "Omit when unknown.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "totalChapters": {
+      "description": "Omit when unknown.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "publishers": {
+      "description": "One entry per edition.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/publisher" }
+    },
+    "magazines": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/magazine" }
+    },
+    "licensedLanguages": {
+      "description": "Languages in which the series has an official licensed edition.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/languageTag" }
+    },
+    "relations": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/relation" }
+    },
+    "extensions": {
+      "description": "Tool data, keyed by tool name. The schema does not examine the contents.",
+      "type": "object",
+      "propertyNames": { "minLength": 1 },
+      "additionalProperties": { "type": "object" }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "pattern": "\\S"
+    },
+    "languageTag": {
+      "description": "A BCP 47 language tag, such as ja, ja-Latn or zh-Hant-TW.",
+      "type": "string",
+      "pattern": "^[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*$"
+    },
+    "countryCode": {
+      "description": "An ISO 3166-1 two-letter country code.",
+      "type": "string",
+      "pattern": "^[A-Z]{2}$"
+    },
+    "webAddress": {
+      "type": "string",
+      "pattern": "^https?://.+"
+    },
+    "partialDate": {
+      "description": "A date with optional month and day.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["year"],
+      "properties": {
+        "year": { "type": "integer", "minimum": 1, "maximum": 9999 },
+        "month": { "type": "integer", "minimum": 1, "maximum": 12 },
+        "day": { "type": "integer", "minimum": 1, "maximum": 31 }
+      },
+      "dependentRequired": { "day": ["month"] }
+    },
+    "titles": {
+      "description": "The names of the series. Exactly one entry is the primary title.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/title" },
+      "contains": {
+        "type": "object",
+        "required": ["primary"],
+        "properties": { "primary": { "const": true } }
+      },
+      "minContains": 1,
+      "maxContains": 1
+    },
+    "title": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text"],
+      "properties": {
+        "text": { "$ref": "#/$defs/nonEmptyString" },
+        "language": { "$ref": "#/$defs/languageTag" },
+        "kind": {
+          "enum": ["official", "alternative", "abbreviated"],
+          "default": "official"
+        },
+        "primary": { "const": true }
+      }
+    },
+    "creators": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/creator" }
+    },
+    "creator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "role"],
+      "properties": {
+        "name": { "$ref": "#/$defs/nonEmptyString" },
+        "role": {
+          "enum": [
+            "story",
+            "art",
+            "storyAndArt",
+            "originalCreator",
+            "characterDesign",
+            "translator",
+            "letterer",
+            "editor",
+            "assistant",
+            "other"
+          ]
+        },
+        "note": { "$ref": "#/$defs/nonEmptyString" },
+        "externalIds": { "$ref": "#/$defs/externalIds" }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["language", "text"],
+      "properties": {
+        "language": { "$ref": "#/$defs/languageTag" },
+        "text": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "tag": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "$ref": "#/$defs/nonEmptyString" },
+        "namespace": { "$ref": "#/$defs/nonEmptyString" },
+        "spoiler": { "type": "boolean", "default": false }
+      }
+    },
+    "externalIds": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/externalId" }
+    },
+    "externalId": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "id"],
+      "properties": {
+        "provider": {
+          "description": "A lowercase provider key. The field reference lists the recommended keys.",
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "id": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url"],
+      "properties": {
+        "url": { "$ref": "#/$defs/webAddress" },
+        "kind": { "enum": ["official", "retailer", "info", "social", "other"] },
+        "language": { "$ref": "#/$defs/languageTag" }
+      }
+    },
+    "cover": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url"],
+      "properties": {
+        "url": { "$ref": "#/$defs/webAddress" },
+        "volume": { "$ref": "#/$defs/nonEmptyString" },
+        "language": { "$ref": "#/$defs/languageTag" }
+      }
+    },
+    "namedEntity": {
+      "description": "A parody or a circle: a name with optional external IDs.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "$ref": "#/$defs/nonEmptyString" },
+        "externalIds": { "$ref": "#/$defs/externalIds" }
+      }
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "$ref": "#/$defs/nonEmptyString" },
+        "date": { "$ref": "#/$defs/partialDate" }
+      }
+    },
+    "publisher": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "$ref": "#/$defs/nonEmptyString" },
+        "language": { "$ref": "#/$defs/languageTag" },
+        "imprint": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "magazine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "$ref": "#/$defs/nonEmptyString" },
+        "startDate": { "$ref": "#/$defs/partialDate" },
+        "endDate": { "$ref": "#/$defs/partialDate" }
+      }
+    },
+    "relation": {
+      "description": "A link to another series. The type states what the other series is to this one.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "anyOf": [{ "required": ["title"] }, { "required": ["externalIds"] }],
+      "properties": {
+        "type": {
+          "enum": [
+            "prequel",
+            "sequel",
+            "parentStory",
+            "sideStory",
+            "spinOff",
+            "alternativeVersion",
+            "adaptation",
+            "sharedUniverse",
+            "other"
+          ]
+        },
+        "title": { "$ref": "#/$defs/nonEmptyString" },
+        "externalIds": { "$ref": "#/$defs/externalIds" }
+      }
+    },
+    "format": { "enum": ["manga", "manhwa", "manhua", "oel", "other"] },
+    "publicationType": { "enum": ["commercial", "doujinshi", "webcomic"] },
+    "publicationStatus": {
+      "enum": ["upcoming", "ongoing", "hiatus", "completed", "cancelled", "unknown"]
+    },
+    "demographic": { "enum": ["shounen", "shoujo", "seinen", "josei", "kids"] },
+    "contentRating": { "enum": ["safe", "suggestive", "erotica", "pornographic"] },
+    "readingMode": { "enum": ["rightToLeft", "leftToRight", "vertical", "longStrip"] },
+    "censorshipState": { "enum": ["uncensored", "decensored", "mosaic", "bars", "other"] }
+  }
+}
