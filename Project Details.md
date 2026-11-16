@@ -18,4 +18,4 @@ Would it be possible to check on the following metadata sites to see what they o
 
 Would also like to support 18+ content as well such as hentai or doujin or pornhwa, but I don't know of any metadata providers for that kind of content.
 
-Also look into whay th mylar schema supports. I know its more of a top level series metadata scheme but maybe it would be a good idea to look into creating a custom schema for that as well.
+Also look into what the mylar schema supports. I know its more of a top level series metadata scheme but maybe it would be a good idea to look into creating a custom schema for that as well.
