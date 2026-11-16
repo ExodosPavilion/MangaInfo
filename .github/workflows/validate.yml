@@ -1,0 +1,48 @@
+name: Validate schemas
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "schema/**"
+      - "examples/**"
+      - "tools/validate/**"
+      - ".github/workflows/validate.yml"
+  pull_request:
+    paths:
+      - "schema/**"
+      - "examples/**"
+      - "tools/validate/**"
+      - ".github/workflows/validate.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tools/validate
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: tools/validate/requirements.txt
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: tools/validate/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          npm ci
+
+      - name: Validate examples and test cases
+        run: npm run validate
