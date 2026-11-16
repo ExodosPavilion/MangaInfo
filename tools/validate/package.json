@@ -1,0 +1,15 @@
+{
+  "name": "mangainfo-validate",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Validates the MangaInfo examples against the schemas.",
+  "type": "module",
+  "scripts": {
+    "validate:json": "node validate_json.mjs",
+    "validate:xml": "python validate_xml.py",
+    "validate": "npm run validate:xml && npm run validate:json"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1"
+  }
+}
